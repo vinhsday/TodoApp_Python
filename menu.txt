@@ -1,0 +1,10 @@
+========== TODO APP ==========
+1. Show tasks
+2. Add task
+3. Edit task
+4. Complete task
+5. Delete task
+6. Save
+7. Load
+0. Exit
+==============================
