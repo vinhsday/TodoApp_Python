@@ -1,12 +1,24 @@
 import csv
-from task import Task
+from models.task import Task
 from datetime import datetime
 class TodoApp:
     def __init__(self):
         self.tasks = []
+
+    def get_completed_tasks(self,completed: bool):
+        if completed:
+            return [task for task in self.tasks if task.completed]
+        return [task for task in self.tasks if not task.completed]
+
+    def get_priority_tasks(self, priority: str):
+        return [task for task in self.tasks if task.priority == priority]
+    
+    def get_task(self, index):
+        self.get_index(index)
+        return self.tasks[index-1]
     
     def add_task(self, title, deadline):
-        self.tasks.append(Task(title=title,deadline=deadline).create_deadline(deadline))
+        self.tasks.append(Task(title=title,deadline=deadline))
         self.sort_tasks()
 
     def show_tasks(self):

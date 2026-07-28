@@ -1,16 +1,20 @@
 from datetime import datetime
-
+from database import Base
+from sqlalchemy import Column
+from datetime import date
 class Task:
     def __init__(self, title, completed = False, created_at = None, deadline = None):
         if created_at == None:
             created_at = datetime.strptime(datetime.now().strftime("%Y-%m-%d"),"%Y-%m-%d")
         if not title.strip():
             raise ValueError(...)
+        if isinstance(deadline, str):
+            deadline = datetime.strptime(deadline, "%Y-%m-%d")
         
         self.title = title
         self.completed = completed
         self.created_at = created_at
-        self.deadline = deadline
+        self.deadline = self.create_deadline(deadline)
         self.days_remaining = abs((self.created_at - self.deadline).days)
         self.priority = self.prioritize()
 
@@ -45,11 +49,10 @@ class Task:
             if deadline.day < self.created_at.day:
                 raise ValueError()
         self.deadline = deadline
-        return self
+        return deadline
 
     def calculate_days_remaining(self):
         self.days_remaining = abs((self.created_at - self.deadline).days)
 
  
 
-    

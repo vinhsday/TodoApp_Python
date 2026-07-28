@@ -1,5 +1,5 @@
-from todo_app import TodoApp
-from task import Task
+from services.todo_app import TodoApp
+from models.task import Task
 from datetime import datetime
 edit_menu = ''
 with open('edit_menu.txt') as f:

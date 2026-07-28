@@ -1,6 +1,20 @@
+from database import Base, engine, SessionLocal
+from models.new_task import Task
 from datetime import *
-str1 = datetime.strptime("2022 11 11", "%Y %m %d")
-str2 = datetime.now().strftime("%Y %m %d")
-str2 = datetime.strptime(datetime.now(), "%Y %m %d")
-day = abs((str1 - str2).days)
-print(day)
+
+from models.user import User
+Base.metadata.create_all(bind=engine)
+
+task = Task(
+    title="Hello",
+    completed=False,
+    deadline=date(2026,12,12)
+)
+user = User(
+    username="Helllo",
+    hashed_password="123456"
+)
+user.tasks.append(task)
+
+print(user.tasks)
+
