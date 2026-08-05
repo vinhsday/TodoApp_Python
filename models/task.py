@@ -5,11 +5,11 @@ from datetime import date
 class Task:
     def __init__(self, title, completed = False, created_at = None, deadline = None):
         if created_at == None:
-            created_at = datetime.strptime(datetime.now().strftime("%Y-%m-%d"),"%Y-%m-%d")
+            created_at = datetime.strptime(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),"%Y-%m-%d %H:%M:%S")
         if not title.strip():
             raise ValueError(...)
         if isinstance(deadline, str):
-            deadline = datetime.strptime(deadline, "%Y-%m-%d")
+            deadline = datetime.strptime(deadline, "%Y-%m-%d %H:%M:%S")
         
         self.title = title
         self.completed = completed

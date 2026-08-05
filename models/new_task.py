@@ -1,22 +1,28 @@
+import datetime
+
 from sqlalchemy import *
 from sqlalchemy.orm import relationship
 from database import Base
-from datetime import date
+from datetime import datetime
 class Task(Base):
     __tablename__ = "tasks"
 
     id = Column(Integer, primary_key=True)
     title = Column(String)
     completed = Column(Boolean,default=False)
-    deadline = Column(Date)
+    deadline = Column(DateTime, nullable=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     user = relationship("User", back_populates="tasks")
 
     @property
     def days_remaining(self):
-        return (self.deadline - date.today()).days
+        if self.deadline is None:
+            return
+        return (self.deadline - datetime.today()).days
     @property
     def priority(self):
+        if self.deadline is None:
+            return "none"
         if self.days_remaining <= 2:
             return "red"
         elif self.days_remaining <= 10:
@@ -29,4 +35,6 @@ class Task(Base):
 
     def complete(self):
             self.completed = True
+
+    
 

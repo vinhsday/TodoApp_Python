@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime
 from pydantic import BaseModel, ConfigDict
 
 class TaskResponse(BaseModel):
@@ -6,6 +6,6 @@ class TaskResponse(BaseModel):
     id: int
     title: str
     completed: bool
-    deadline: date
+    deadline: datetime | None = None
     priority: str
     user_id: int

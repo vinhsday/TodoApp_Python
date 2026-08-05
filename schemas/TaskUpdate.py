@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import date, datetime
-class TaskCreate(BaseModel):
+class TaskUpdate(BaseModel):
     title: str | None = None
-    deadline: date | None = None
-    complete: bool | None = None 
+    completed: bool | None = None
+    deadline: datetime | None = None

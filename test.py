@@ -1,3 +1,5 @@
+from sqlalchemy import select
+
 from database import Base, engine, SessionLocal
 from models.new_task import Task
 from datetime import *
@@ -14,7 +16,3 @@ user = User(
     username="Helllo",
     hashed_password="123456"
 )
-user.tasks.append(task)
-
-print(user.tasks)
-

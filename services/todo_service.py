@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime
 import re
 from signal import raise_signal
 import stat
@@ -8,13 +8,15 @@ from sqlalchemy.orm import Session
 from models.new_task import Task
 from sqlalchemy import *
 from models.user import User
+from schemas import TaskUpdate
 from schemas.UserCreate import UserCreate
 from security import verify_password, hash_password
+
 class TodoService:
     def __init__(self, db: Session):
         self.db = db
 
-    def add_task(self, title: str, deadline: date, user: User) -> Task:
+    def add_task(self, title: str, deadline: datetime, user: User) -> Task:
         task = Task(
             title=title,
             deadline=deadline
@@ -27,6 +29,7 @@ class TodoService:
         statement = (
             select(Task)
             .where(Task.user_id == user.id)
+            .order_by(Task.deadline)
         ) 
         result = self.db.execute(statement)
         tasks = result.scalars().all()
@@ -43,10 +46,13 @@ class TodoService:
             raise IndexError("Task not found")
         return task
 
-    def update_task(self, task_id: int, new_title: str, user: User) -> Task:
+    def update_task(self, task_id: int, request: TaskUpdate, user: User) -> Task:
         task = self.get_task(task_id, user)
-        task.rename(new_title)
+        data = request.model_dump(exclude_unset=True)
+        for field,value in data.items():
+            setattr(task, field, value)
         self.db.commit()
+        self.db.refresh(task)
         return task
 
     def delete_task(self, task_id: int, user: User) -> Task:

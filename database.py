@@ -4,5 +4,8 @@ from sqlalchemy.orm import sessionmaker, DeclarativeBase
 engine = create_engine("sqlite:///todo.db")
 SessionLocal = sessionmaker(bind=engine)
 
+
 class Base(DeclarativeBase):
     pass
+
+Base.metadata.create_all(bind=engine)

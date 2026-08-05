@@ -1,9 +1,9 @@
-from asyncio import Task
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from database import SessionLocal
 from models.user import User
+from schemas import TaskUpdate
 from schemas.TaskResponse import TaskResponse
 from schemas.Token import Token
 from security import ALGORITHM, SECRET_KEY, create_access_token
@@ -13,13 +13,11 @@ from schemas.UserResponse import UserResponse
 from services.todo_service import TodoService
 from schemas.UserCreate import UserCreate
 from schemas.LoginRequest import LoginRequest
+from schemas.TaskUpdate import TaskUpdate
 from jose import JWTError, jwt
 from security import oauth2_scheme
 app = FastAPI()
 todo = TodoApp()
-
-todo.add_task("Python","2026-12-12")
-todo.add_task("C++","2026-10-10")
 
 def get_db():
     db = SessionLocal()
@@ -115,3 +113,16 @@ def login(request: OAuth2PasswordRequestForm = Depends(), service: TodoService=D
             detail=str(e)
         )
     
+@app.patch("/tasks/{task_id}")
+def update_task(task_id: int,
+                request: TaskUpdate,
+                service: TodoService = Depends(get_todo_service), 
+                user: User = Depends(get_current_user)
+                ):
+    try:
+        return service.update_task(task_id, request, user)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=401,
+            detail=str(e)
+        )
