@@ -3,7 +3,7 @@ from webbrowser import get
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from database import Base, SessionLocal
+from database import Base, SessionLocal, engine
 from enums.priority import PriorityEnum
 from models.new_task import Task
 from models.user import User
@@ -37,7 +37,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
+Base.metadata.create_all(bind=engine)
 def get_db():
     db = SessionLocal()
     try:

@@ -8,7 +8,4 @@ SessionLocal = sessionmaker(bind=engine)
 class Base(DeclarativeBase):
     pass
 
-from models.new_task import Task
-from models.user import User
-
 Base.metadata.create_all(bind=engine)
