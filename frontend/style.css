@@ -1,5 +1,5 @@
 /* 1. Thiết lập cấu trúc toàn trang */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap");
 :root {
   --bg-base: #12151f;
   --bg-elevated: #1a1f2e;
@@ -7,31 +7,31 @@
   --bg-card-hover: rgba(255, 255, 255, 0.06);
   --border-soft: rgba(255, 255, 255, 0.08);
   --border-strong: rgba(255, 255, 255, 0.16);
- 
+
   --accent: #7c8fff;
   --accent-glow: rgba(124, 143, 255, 0.35);
   --accent-soft: rgba(124, 143, 255, 0.12);
- 
+
   --danger: #ff6b6b;
   --danger-soft: rgba(255, 107, 107, 0.12);
- 
+
   --urgent: #ff9f5a;
   --calm: #5ad1a8;
- 
+
   --text-hi: #f2f3f8;
   --text-mid: #a7acc2;
   --text-low: #6b7086;
- 
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-body: 'Inter', sans-serif;
- 
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+
   --radius-lg: 18px;
   --radius-md: 12px;
   --radius-sm: 8px;
- 
+
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
- 
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -39,16 +39,20 @@ body {
   font-family: var(--font-body);
   color: var(--text-hi);
   background:
-    radial-gradient(circle at 15% 0%, rgba(124, 143, 255, 0.10), transparent 45%),
-    radial-gradient(circle at 85% 20%, rgba(90, 209, 168, 0.07), transparent 40%),
+    radial-gradient(
+      circle at 15% 0%,
+      rgba(124, 143, 255, 0.1),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 85% 20%,
+      rgba(90, 209, 168, 0.07),
+      transparent 40%
+    ),
     var(--bg-base);
   text-align: center;
-
-
 }
- 
 
- 
 h1 {
   width: 100%;
   max-width: 620px;
@@ -60,7 +64,7 @@ h1 {
   color: var(--text-hi);
   text-align: center;
 }
- 
+
 h2 {
   width: 100%;
   max-width: 620px;
@@ -71,7 +75,6 @@ h2 {
   letter-spacing: 0.12em;
   text-align: center;
 }
- 
 
 /* 2. Thiết lập ô nhập liệu */
 input {
@@ -81,14 +84,16 @@ input {
   margin: 8px 0;
   font-size: 16px;
   border: 1px solid #dcdde1;
-  border-radius: 6px;        /* Bo góc nhẹ */
-  outline: none;             /* Tắt viền mặc định khi click */
-  transition: border-color 0.2s, box-shadow 0.2s;
+  border-radius: 6px; /* Bo góc nhẹ */
+  outline: none; /* Tắt viền mặc định khi click */
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 /* Hiệu ứng khi người dùng click vào ô input */
 input:focus {
-  border-color: #351c75;     /* Đổi màu viền sang tím */
+  border-color: #351c75; /* Đổi màu viền sang tím */
   box-shadow: 0 0 0 3px rgba(53, 28, 117, 0.2); /* Đổ bóng mờ xung quanh */
 }
 
@@ -98,11 +103,22 @@ input:focus {
 button {
   background-color: #c2fbd7;
   border-radius: 100px;
-  box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
+  box-shadow:
+    rgba(44, 187, 99, 0.2) 0 -25px 18px -14px inset,
+    rgba(44, 187, 99, 0.15) 0 1px 2px,
+    rgba(44, 187, 99, 0.15) 0 2px 4px,
+    rgba(44, 187, 99, 0.15) 0 4px 8px,
+    rgba(44, 187, 99, 0.15) 0 8px 16px,
+    rgba(44, 187, 99, 0.15) 0 16px 32px;
   color: green;
   cursor: pointer;
   display: inline-block;
-  font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+  font-family:
+    CerebriSans-Regular,
+    -apple-system,
+    system-ui,
+    Roboto,
+    sans-serif;
   padding: 7px 20px;
   text-align: center;
   text-decoration: none;
@@ -115,7 +131,13 @@ button {
 }
 
 button:hover {
-  box-shadow: rgba(44,187,99,.35) 0 -25px 18px -14px inset,rgba(44,187,99,.25) 0 1px 2px,rgba(44,187,99,.25) 0 2px 4px,rgba(44,187,99,.25) 0 4px 8px,rgba(44,187,99,.25) 0 8px 16px,rgba(44,187,99,.25) 0 16px 32px;
+  box-shadow:
+    rgba(44, 187, 99, 0.35) 0 -25px 18px -14px inset,
+    rgba(44, 187, 99, 0.25) 0 1px 2px,
+    rgba(44, 187, 99, 0.25) 0 2px 4px,
+    rgba(44, 187, 99, 0.25) 0 4px 8px,
+    rgba(44, 187, 99, 0.25) 0 8px 16px,
+    rgba(44, 187, 99, 0.25) 0 16px 32px;
   transform: scale(1.05) rotate(-1deg);
 }
 
@@ -126,7 +148,7 @@ button:hover {
 
 /* Hiệu ứng khi nhấn giữ nút */
 button:active {
-  transform: scale(0.98);    /* Thu nhỏ nút lại một chút tạo cảm giác nhấn */
+  transform: scale(0.98); /* Thu nhỏ nút lại một chút tạo cảm giác nhấn */
 }
 
 /* Thiết lập cho thẻ bọc ngoài (ul) để căn giữa toàn bộ danh sách */
@@ -135,9 +157,9 @@ ul {
   margin: 0;
   width: 100%;
   display: flex;
-  flex-direction: column;    /* Xếp các thẻ li theo hàng dọc */
-  align-items: center;       /* Căn toàn bộ khối ul vào giữa màn hình */
-  gap: 16px;                 /* Tạo khoảng cách xa nhau giữa các thẻ li */
+  flex-direction: column; /* Xếp các thẻ li theo hàng dọc */
+  align-items: center; /* Căn toàn bộ khối ul vào giữa màn hình */
+  gap: 16px; /* Tạo khoảng cách xa nhau giữa các thẻ li */
 }
 
 /* Thiết lập cho thẻ bọc ngoài (ul) để căn giữa toàn bộ danh sách */
@@ -148,24 +170,24 @@ ul {
   display: flex;
   flex-direction: column;
   align-items: center; /* Căn danh sách vào giữa màn hình */
-  gap: 12px;           /* Khoảng cách giữa các hàng li */
+  gap: 12px; /* Khoảng cách giữa các hàng li */
 }
 
 /* Cấu trúc chính của thẻ li chứa 3 thành phần */
 li {
   list-style: none;
   background-color: #ffffff;
-  
+
   /* Co giãn linh hoạt */
   width: 100%;
-  max-width: 1000px;    /* Chiều rộng lý tưởng cho 1 hàng hàng đầy đủ thành phần */
+  max-width: 1000px; /* Chiều rộng lý tưởng cho 1 hàng hàng đầy đủ thành phần */
   box-sizing: border-box;
-  
+
   /* Bật Flexbox để xếp các hàng ngang */
   display: flex;
   align-items: center; /* Căn các thành phần thẳng hàng đều nhau theo chiều dọc */
-  gap: 16px;           /* Khoảng cách giữa checkbox -> text -> button */
-  
+  gap: 16px; /* Khoảng cách giữa checkbox -> text -> button */
+
   padding: 12px 18px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
@@ -177,16 +199,16 @@ li input[type="checkbox"] {
   height: 20px;
   cursor: pointer;
   accent-color: #351c75; /* Đổi màu xanh mặc định thành màu tím */
-  flex-shrink: 0;        /* Không cho ô checkbox bị méo khi text quá dài */
+  flex-shrink: 0; /* Không cho ô checkbox bị méo khi text quá dài */
 }
 
 /* 2. Định dạng Phần Text (Ở giữa) */
 li span {
-  flex-grow: 1;          /* Chiếm toàn bộ không gian trống còn lại ở giữa */
+  flex-grow: 1; /* Chiếm toàn bộ không gian trống còn lại ở giữa */
   font-size: 16px;
   color: #2f3640;
-  text-align: left;      /* Giữ văn bản căn trái để dễ đọc hàng dọc */
-  word-break: break-word;/* Tự động xuống dòng nếu chữ quá dài */
+  text-align: left; /* Giữ văn bản căn trái để dễ đọc hàng dọc */
+  word-break: break-word; /* Tự động xuống dòng nếu chữ quá dài */
 }
 
 /* Hiệu ứng gạch ngang chữ khi tích vào checkbox (Tùy chọn) */
@@ -205,7 +227,7 @@ li button {
   font-weight: 500;
   border-radius: 6px;
   cursor: pointer;
-  flex-shrink: 0;        /* Không cho nút bị bóp méo chiều rộng */
+  flex-shrink: 0; /* Không cho nút bị bóp méo chiều rộng */
   transition: background-color 0.2s;
 }
 
@@ -214,21 +236,31 @@ li button:hover {
 }
 
 .deadline {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 .overdue {
-    color: red;
+  color: red;
 }
 
 .today {
-    color: orange;
+  color: orange;
 }
 
 .upcoming {
-    color: green;
+  color: green;
 }
 
 .none {
-    color: gray;
+  color: gray;
 }
+
+/* Định nghĩa một class riêng cho thông báo lỗi */
+.error-message {
+  color: #0f0e0e; /* Màu đỏ cam hiện đại */
+  list-style: none;
+  font-family: var(--font-display);
+  text-align: center;
+  justify-content: center; /* Xóa dấu chấm đầu dòng của thẻ li */
+}
+

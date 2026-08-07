@@ -1,10 +1,12 @@
-from datetime import datetime
+from datetime import date, datetime
 import re
 from signal import raise_signal
 import stat
+from sys import deactivate_stack_trampoline
 from time import sleep
 from turtle import reset
 from sqlalchemy.orm import Session
+from enums.priority import PriorityEnum
 from models.new_task import Task
 from sqlalchemy import *
 from models.user import User
@@ -16,24 +18,53 @@ class TodoService:
     def __init__(self, db: Session):
         self.db = db
 
-    def add_task(self, title: str, deadline: datetime, user: User) -> Task:
-        task = Task(
-            title=title,
-            deadline=deadline
+    def add_task(self, title: str, user: User,deadline: datetime|None=None) -> Task:
+        try:
+            task = Task(
+                title=title,
+                deadline=deadline
+            )
+            user.tasks.append(task)
+            self.db.commit()
+            self.db.refresh(task)
+            return task
+        except Exception:
+            self.db.rollback()
+            raise 
+
+    def get_tasks(self, 
+                  user: User, 
+                  completed: bool | None = None,
+                  search: str | None = None,
+                  sort: str | None = None) -> list[Task]:
+        # statement = (
+        #     select(Task)
+        #     .where(Task.user_id == user.id)
+        #     .order_by(Task.deadline)
+        # ) 
+        # result = self.db.execute(statement)
+        # tasks = result.scalars().all()
+        query = (
+            self.db.query(Task)
+            .filter(Task.user_id == user.id)
         )
-        user.tasks.append(task)
-        self.db.commit()
-        self.db.refresh(task)
-        return task
-    def get_tasks(self, user: User):
-        statement = (
-            select(Task)
-            .where(Task.user_id == user.id)
-            .order_by(Task.deadline)
-        ) 
-        result = self.db.execute(statement)
-        tasks = result.scalars().all()
-        return tasks
+        
+        if completed is not None:
+            query = query.filter(Task.completed == completed)
+
+
+        if search:
+            query = query.filter(Task.title.ilike(f"%{search}%"))
+
+        allowed_sort = {
+            "deadline": Task.deadline
+        }
+        
+        if sort in allowed_sort:
+            column = allowed_sort[sort]
+            query = query.order_by(nulls_last(column.asc()))
+        return query.all()
+
     def get_task(self, task_id, user: User):
         statement = (
             select(Task)
@@ -133,3 +164,14 @@ class TodoService:
         if user is None:
             raise ValueError("Invalid username or password")
         return user
+
+    def get_tasks_by_completed(self, user: User, completed):
+        query = (
+            self.db.query(Task)
+            .filter(Task.user_id == user.id)
+        )
+
+        if completed is not None:
+            query = query.filter(Task.completed == completed)
+
+        return query.all()

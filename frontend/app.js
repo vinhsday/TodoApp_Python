@@ -1,12 +1,18 @@
-import { editTasks, getTasks } from "./api.js";
+import { editTasks, getTasks, searchTasks } from "./api.js";
 import { createTask } from "./api.js";
 import { updateTasks } from "./api.js";
 import { deleteTasks } from "./api.js";
-let accessToken;
+
+const accessToken = localStorage.getItem("accessToken")
+if (!accessToken) {
+  window.location.href = "login.html"
+}
 const input = document.querySelector("input");
-const button = document.querySelector("button");
+const add_button = document.getElementById("add");
 const list = document.querySelector("ul");
 const deadline = document.querySelector("#deadline");
+const search_input = document.getElementById("search")
+const logout_button = document.getElementById("logout")
 function renderTask(task) {
   const li = document.createElement("li");
   const title = document.createElement("span");
@@ -50,6 +56,7 @@ function renderTask(task) {
   li.appendChild(deleteButton);
   list.appendChild(li);
 }
+
 
 function updateTaskUI(task, li) {
   li.innerHTML = "";
@@ -141,14 +148,13 @@ function editTaskUI(task, li) {
   li.appendChild(cancelButton);
 }
 
-button.addEventListener("click", async () => {
+add_button.addEventListener("click", async () => {
   const title = input.value.trim();
   const deadlineElement = deadline.value;
   if (title === "") {
     return;
   }
-
-  button.disabled = true;
+  add_button.disabled = true;
   try {
     const task = await createTask(title, deadlineElement || null, accessToken);
     renderTask(task);
@@ -156,32 +162,11 @@ button.addEventListener("click", async () => {
   } catch (error) {
     console.error(error);
   } finally {
-    button.disabled = false;
+    add_button.disabled = false;
     deadline.value = null;
   }
 });
 
-const formData = new URLSearchParams();
-
-formData.append("username", "1");
-formData.append("password", "1");
-
-fetch("http://127.0.0.1:8000/users/login", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/x-www-form-urlencoded"
-  },
-  body: formData
-})
-  .then((response) => response.json())
-  .then((data) => {
-    accessToken = data.access_token;
-  })
-  .then((data) => getTasks(accessToken))
-  .then((tasks) => tasks.forEach((task) => renderTask(task)))
-  .catch((error) => {
-    console.error(error);
-  });
 
 function getDeadlineStatus(deadline) {
   if (!deadline) {
@@ -191,8 +176,38 @@ function getDeadlineStatus(deadline) {
   const deadlineDate = new Date(deadline);
   if (deadlineDate < now) {
     return "overdue";
-  } else if (deadlineDate.getDate === now.getDate()) {
+  } else if (deadlineDate.getFullYear === now.getFullYear
+    && deadlineDate.getMonth === now.getMonth
+    && deadlineDate.getDate === now.getDate
+  ) {
     return "today";
   }
   return "upcoming";
 }
+
+
+search_input.addEventListener("input", async()=>{
+  const keyword = search_input.value.trim()
+  list.innerHTML = ""
+  if (keyword === "") {
+    const tasks = await getTasks(accessToken)
+    tasks.forEach(task => renderTask(task))
+    return
+  }
+
+  const sortedTasks = await searchTasks(accessToken, keyword)
+  if (sortedTasks.length > 0) {
+    sortedTasks.forEach(task => renderTask(task))
+  } else {
+    list.innerHTML = `<li class="error-message">There is no task you find !!</li>`
+  
+  }
+})
+
+
+const tasks = await getTasks(accessToken)
+tasks.forEach(task=>renderTask(task))
+logout_button.addEventListener("click", ()=>{
+  localStorage.removeItem("accessToken")
+  window.location.href = "login.html"
+})

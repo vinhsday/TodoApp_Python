@@ -1,3 +1,4 @@
+from click import DateTime
 from sqlalchemy import select
 
 from database import Base, engine, SessionLocal
@@ -5,14 +6,8 @@ from models.new_task import Task
 from datetime import *
 
 from models.user import User
-Base.metadata.create_all(bind=engine)
+db = SessionLocal()
 
-task = Task(
-    title="Hello",
-    completed=False,
-    deadline=date(2026,12,12)
-)
-user = User(
-    username="Helllo",
-    hashed_password="123456"
-)
+task = db.query(Task).filter(Task.id == 2).all()
+for t in task:
+    print((t.deadline - datetime.now()).days)

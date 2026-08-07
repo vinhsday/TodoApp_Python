@@ -1,9 +1,14 @@
 
+from webbrowser import get
+
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from database import SessionLocal
+from enums.priority import PriorityEnum
+from models.new_task import Task
 from models.user import User
 from schemas import TaskUpdate
+from schemas.CompleteRequest import CompleteRequest
 from schemas.TaskResponse import TaskResponse
 from schemas.Token import Token
 from security import ALGORITHM, SECRET_KEY, create_access_token
@@ -16,8 +21,21 @@ from schemas.LoginRequest import LoginRequest
 from schemas.TaskUpdate import TaskUpdate
 from jose import JWTError, jwt
 from security import oauth2_scheme
+from fastapi.middleware.cors import CORSMiddleware
+
+
 app = FastAPI()
-todo = TodoApp()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://127.0.0.1:5500",
+        "http://localhost:5500",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 def get_db():
     db = SessionLocal()
@@ -42,12 +60,20 @@ def get_current_user(service: TodoService = Depends(get_todo_service), token: st
 def home():
     return "What exactly you need is here !"
 @app.get("/tasks", response_model=list[TaskResponse])
-def get_tasks(service: TodoService = Depends(get_todo_service), user: User = Depends(get_current_user)):
-    return service.get_tasks(user)
+def get_tasks(completed: bool | None = None,
+               search: str | None = None,
+               sort: str | None = None,
+               service: TodoService = Depends(get_todo_service), user: User = Depends(get_current_user)):
+    return service.get_tasks(user=user,
+                              completed=completed,
+                              search=search,
+                              sort=sort)
+
+
         
 @app.post("/tasks", response_model=TaskResponse)
 def post_tasks(task: TaskCreate, service: TodoService = Depends(get_todo_service), user: User = Depends(get_current_user)):
-    return service.add_task(task.title, task.deadline, user)
+    return service.add_task(task.title, user, task.deadline)
 
 @app.get("/tasks/{id}", response_model=TaskResponse)
 def get_task(id: int, service: TodoService = Depends(get_todo_service), user: User = Depends(get_current_user)):
@@ -126,3 +152,24 @@ def update_task(task_id: int,
             status_code=401,
             detail=str(e)
         )
+
+
+@app.post("/test-transaction")
+def test(title: str, user_id: int):
+    task = Task(
+        title=title,
+        user_id=user_id
+    )
+
+    db = SessionLocal()
+    db.add(task)
+    db.flush()
+
+    print("ID:", task.id)
+    db.rollback()
+    return {
+        "id": task.id
+    }
+
+
+
