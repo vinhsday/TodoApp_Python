@@ -110,7 +110,8 @@ export async function login(username, password) {
   
 
   if (!response.ok) {
-    throw new Error( "Login failed");
+    const text = await response.text()
+    throw new Error(text || "Login failed");
   }
   const data = await response.json();
 
