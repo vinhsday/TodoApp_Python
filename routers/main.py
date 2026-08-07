@@ -22,15 +22,15 @@ from schemas.TaskUpdate import TaskUpdate
 from jose import JWTError, jwt
 from security import oauth2_scheme
 from fastapi.middleware.cors import CORSMiddleware
-
+from sqlalchemy.orm import Session
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://127.0.0.1:5500",
-        "http://localhost:5500",
-        "https://your-frontend.onrender.com",
+        "http://localhost:5500"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -57,9 +57,7 @@ def get_current_user(service: TodoService = Depends(get_todo_service), token: st
             detail="Could not validate credentials"
         )
     return service.get_user_by_username(payload["sub"])
-@app.get("/")
-def home():
-    return "What exactly you need is here !"
+
 @app.get("/tasks", response_model=list[TaskResponse])
 def get_tasks(completed: bool | None = None,
                search: str | None = None,
@@ -172,5 +170,5 @@ def test(title: str, user_id: int):
         "id": task.id
     }
 
-
+app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend") 
 
