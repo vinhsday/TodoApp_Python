@@ -1,10 +1,4 @@
 from datetime import date, datetime
-import re
-from signal import raise_signal
-import stat
-from sys import deactivate_stack_trampoline
-from time import sleep
-from turtle import reset
 from sqlalchemy.orm import Session
 from enums.priority import PriorityEnum
 from models.new_task import Task
