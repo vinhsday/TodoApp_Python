@@ -6,6 +6,4 @@ __pycache__/
 *.db
 .env
 .venv/
-# Alembic
-alembic/
-alembic.ini
+
