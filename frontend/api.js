@@ -107,11 +107,12 @@ export async function login(username, password) {
     },
     body: formData
   });
-  const data = await response.json();
+  
 
   if (!response.ok) {
     throw new Error(data.detail || "Login failed");
   }
+  const data = await response.json();
 
   localStorage.setItem("accessToken", data.access_token);
 
@@ -133,7 +134,6 @@ export async function register(username, password, confirm_password) {
       "password": password
     })
   });
-  const data = await response.json();
 
   if (!response.ok) {
     throw new Error(data.detail || "Register failed");
