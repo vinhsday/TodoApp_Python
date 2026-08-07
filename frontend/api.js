@@ -110,7 +110,8 @@ export async function login(username, password) {
   
 
   if (!response.ok) {
-    throw new Error(data.detail || "Login failed");
+    const text = await response.text();
+    throw new Error(text || "Login failed");
   }
   const data = await response.json();
 
@@ -136,7 +137,8 @@ export async function register(username, password, confirm_password) {
   });
 
   if (!response.ok) {
-    throw new Error(data.detail || "Register failed");
+    const text = await response.text();
+    throw new Error(text || "Register failed");
   }
 
   window.location.href = "login.html";
