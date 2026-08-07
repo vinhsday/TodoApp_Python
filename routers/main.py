@@ -3,7 +3,7 @@ from webbrowser import get
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from database import SessionLocal
+from database import Base, SessionLocal
 from enums.priority import PriorityEnum
 from models.new_task import Task
 from models.user import User
